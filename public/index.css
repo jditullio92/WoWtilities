@@ -1,0 +1,12 @@
+textarea {
+    resize: none;
+}
+
+input {
+    padding: .5rem !important;
+}
+
+input.form-control-plaintext {
+    font-size: large;
+    font-weight: 500;
+}
