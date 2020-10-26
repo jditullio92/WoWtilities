@@ -1,3 +1,7 @@
+html {
+    font-size: 15px;
+}
+
 textarea {
     resize: none;
 }
@@ -14,7 +18,7 @@ input.form-control-plaintext {
 .img-icon {
     height: 100%;
     width: 100%;
-    background-size: contain;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 
