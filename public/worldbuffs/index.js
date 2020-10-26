@@ -1,4 +1,5 @@
 // Author: John DiTullio aka gankaskhan
+
 // Page load event handler
 $(document).ready(function () {
     // set timers (timeout prevents error when doing replace on string)
@@ -9,6 +10,9 @@ $(document).ready(function () {
     }
     // text area paste/change event handler
     $('#timerTextArea').on("paste change", pasteeventhandler);
+
+    // console.log(getNow());
+
 });
 
 // Get time until buff (countdown timer)
@@ -37,7 +41,7 @@ function pasteEventHandler() {
     var rendTimeText = timers[0].split("(")[1].split(' ')[0];
     rendTimeText = getAmPmDateFriendly(rendTimeText);
     rendTime = new Date(getDateAsString() + " " + rendTimeText + " PDT");
-    
+
     countdownTimer(rendTime, $('#timerRend'));
 
     // Update text for Rend
