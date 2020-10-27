@@ -1,6 +1,18 @@
 // Author: John DiTullio aka gankaskhan
 
 // Globals
+var Rend = {
+    timeText: '',
+    timer: {
+        start: function () {
+            
+        },
+        stop: function () {
+
+        }
+    }
+};
+
 var RendTime;
 var RendInterval;
 var OnyTime;
