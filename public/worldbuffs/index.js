@@ -1,32 +1,53 @@
 // Author: John DiTullio aka gankaskhan
 
+// Import the moment routines
+import('../momentify.js').then((module) => { dateroutines = module; });
+
 // Globals
-var Rend = {
-    timeText: '',
-    timer: {
-        start: function () {
-            
-        },
-        stop: function () {
 
+// Set defaults for moment.js
+moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
+// Set server time zone (PST or PDT)
+var ServerTimeZone = (moment().isDST() ? "" : "");
+
+// Rend 
+var RendInterval,
+    Rend = {
+        time: '',
+        timer: {
+            clear: () => { clearInterval(RendInterval); },
+            start: () => { RendInterval = setInterval(function () { $('#timeUntilRend').val(dateroutines.getDuration(Rend.time)); }, 1000); },
         }
-    }
-};
+    };
 
-var RendTime;
-var RendInterval;
-var OnyTime;
-var OnyInterval;
-var NefTime;
-var NefInterval;
+// Onyxia
+var OnyTime,
+    OnyInterval,
+    Onyxia = {
+        time: '',
+        timer: {
+            clear: () => { clearInterval(OnyInterval); },
+            start: () => { OnyInterval = setInterval(function () { $('#timeUntilOny').val(dateroutines.getDuration(Onyxia.time)); }, 1000); },
+        }
+    };
+
+// Nefarian
+var NefTime,
+    NefInterval,
+    Nefarian = {
+        time: '',
+        timer: {
+            clear: () => { clearInterval(NefInterval); },
+            start: () => { NefInterval = setInterval(function () { $('#timerNef').val(dateroutines.getDuration(Nefarian.time)); }, 1000); },
+        }
+    };
+
+// SongFlower
 var SongflowerTime;
 var SongflowerInterval;
 
-
 // Page load event handler
 $(document).ready(function () {
-    // Set defaults for moment.js
-    moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
     // set timers (timeout prevents error when doing replace on string)
     function pasteeventhandler() {
         // Do we have text?
@@ -45,44 +66,24 @@ $(document).ready(function () {
 function pasteEventHandler() {
     // Get string as array
     var timers = $('#timerTextArea').val().split("\n");
-    // Split each buff time into a string that can be used to parse a datetime object
+    // Rend
     var RendTimeText = getAmPmDateFriendly(timers[0].split("(")[1].split(' ')[0]);
-    // Set the date using Pacific Time
-    RendTime = new Date(new Date(getDateAsString() + " " + RendTimeText + " PDT").toISOString());
-
-    // Once per second, update text for Rend
-    RendInterval = setInterval(function () {
-        var now = new moment();
-        RendTime = new moment(RendTime);
-        // Display the result for Rend
-        $('#timerRend').val(moment.duration(RendTime.diff(now)).humanize());
-    }, 1000);
-
+    Rend.time = new moment(new Date(new Date(getDateAsString() + " " + RendTimeText + " PDT").toISOString()));
+    Rend.timer.start(Rend.time); // Start the Rend timer
+    // Onyxia
     var onyTimeText = getAmPmDateFriendly(timers[1].split("(")[1].split(' ')[0]);
-    OnyTime = new Date(getDateAsString() + " " + onyTimeText + " PDT");
-    // Once per second, update text for Rend
-    OnyInterval = setInterval(function () {
-        var now = new moment();
-        OnyTime = new moment(OnyTime);
-        // Display the result for Rend
-        $('#timerOny').val(moment.duration(OnyTime.diff(now)).humanize());
-    }, 1000);
-
+    Onyxia.time = new moment(new Date(new Date(getDateAsString() + " " + onyTimeText + " PDT").toISOString()));
+    Onyxia.timer.start();
+    // Nefarian
     var nefTimeText = getAmPmDateFriendly(timers[2].split("(")[1].split(' ')[0]);
-    NefTime = new Date(getDateAsString() + " " + nefTimeText + " PDT");
-    // Once per second, update text for Rend
-    NefInterval = setInterval(function () {
-        var now = new moment();
-        NefTime = new moment(NefTime);
-        // Display the result for Rend
-        $('#timerNef').val(moment.duration(NefTime.diff(now)).humanize());
-    }, 1000);
+    Nefarian.time = new moment(new Date(new Date(getDateAsString() + " " + nefTimeText + " PDT").toISOString()));
+    Nefarian.timer.start();
 }
 
 //#region Dates
 
 // Returns date as a string (ex: "9/19/2020")
-function getDateAsString() {
+function getDateAsString(d) {
     var d = new Date();
     return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
 }
