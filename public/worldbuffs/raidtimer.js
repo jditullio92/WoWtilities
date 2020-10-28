@@ -2,25 +2,23 @@
 
 // Import the moment routines
 import('../momentify.js').then((module) => { dateroutines = module; });
-
-// Globals
-
 // Set defaults for moment.js
 moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
-
 // Set server time zone (PST or PDT)
 var ServerTimeZone = (moment().isDST() ? "" : "");
 
-// Rend 
-var RendInterval,
-    Rend = {
-        time: '',
-        interval: null,
-        timer: {
-            clear: () => { clearInterval(Rend.interval); },
-            start: () => { Rend.interval = setInterval(function () { $('#timeUntilRend').val(dateroutines.getDuration(Rend.time)); }, 1000); },
-        }
-    };
+// Import the moment routines
+import('./rendtimer.js').then((module) => { Rend = module; });
+
+// // Rend
+// var RendInterval,
+//     Rend = {
+//         time: '',
+//         timer: {
+//             clear: () => { clearInterval(RendInterval); },
+//             start: () => { RendInterval = setInterval(function () { $('#timeUntilRend').val(dateroutines.getDuration(Rend.time)); }, 1000); },
+//         }
+//     };
 
 // Onyxia
 var OnyTime,
@@ -99,7 +97,7 @@ function getAmPmDateFriendly(str) { return str.replace("am", " am").replace("pm"
 // Handle clearing all current intervals that are running
 function clearAllIntervals() {
     try {
-        clearInterval(Rend.interval);
+        clearInterval(RendInterval);
         clearInterval(OnyInterval);
         clearInterval(NefInterval);
         clearInterval(SongflowerInterval);
@@ -125,7 +123,4 @@ function test() {
 
 
 // IDEA: Reminder for raid times
-function displayRaidReminder() {
-
-}
 // IDEA: Warcraft logs ?
