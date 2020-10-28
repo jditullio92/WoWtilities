@@ -2,25 +2,22 @@
 
 // Import the moment routines
 import('../momentify.js').then((module) => { dateroutines = module; });
-
-// Globals
-
 // Set defaults for moment.js
 moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
-
 // Set server time zone (PST or PDT)
-var ServerTimeZone = (moment().isDST() ? "" : "");
+var ServerTimeZone = (moment().isDST() ? "PST" : "PDT");
+// Set local time zone (EST or EDT)
+var LocalTimeZone = (moment().isDST() ? "EST" : "EDT");
 
 // Rend 
-var RendInterval,
-    Rend = {
-        time: '',
-        interval: null,
-        timer: {
-            clear: () => { clearInterval(Rend.interval); },
-            start: () => { Rend.interval = setInterval(function () { $('#timeUntilRend').val(dateroutines.getDuration(Rend.time)); }, 1000); },
-        }
-    };
+var Rend = {
+    time: '',
+    interval: null,
+    timer: {
+        clear: () => { clearInterval(Rend.interval); },
+        start: () => { Rend.interval = setInterval(function () { $('#timeUntilRend').val(dateroutines.getDuration(Rend.time)); }, 1000); },
+    }
+};
 
 // Onyxia
 var OnyTime,
@@ -54,8 +51,6 @@ $(document).ready(function () {
     function pasteeventhandler() {
         // Do we have text?
         if ($('#timerTextArea').val().trim().length > 0) {
-            // Clear all existing intervals
-            clearAllIntervals();
             // Do event handler
             setTimeout(function () { pasteEventHandler(); }, 1);
         }
@@ -69,9 +64,15 @@ function pasteEventHandler() {
     // Get string as array
     var timers = $('#timerTextArea').val().split("\n");
     // Rend
-    var RendTimeText = getAmPmDateFriendly(timers[0].split("(")[1].split(' ')[0]);
-    Rend.time = new moment(new Date(new Date(getDateAsString() + " " + RendTimeText + " PDT").toISOString()));
-    Rend.timer.start(Rend.time); // Start the Rend timer
+    if (!timers[0].split("(")[1].split(' ')[0].startsWith("No current")) {
+        var RendTimeText = getAmPmDateFriendly(timers[0].split("(")[1].split(' ')[0]);
+        // Is there a timer in the pasted text for Rend?
+        Rend.time = new moment(new Date(new Date(getDateAsString() + " " + RendTimeText + " PDT").toISOString()));
+        Rend.timer.start(Rend.time); // Start the Rend timer
+    } else {
+        $('#timeUntilRend').val("--:--:--");
+    }
+
     // Onyxia
     var onyTimeText = getAmPmDateFriendly(timers[1].split("(")[1].split(' ')[0]);
     Onyxia.time = new moment(new Date(new Date(getDateAsString() + " " + onyTimeText + " PDT").toISOString()));
@@ -82,31 +83,10 @@ function pasteEventHandler() {
     Nefarian.timer.start();
 }
 
-//#region Dates
-
 // Returns date as a string (ex: "9/19/2020")
-function getDateAsString(d) {
-    var d = new Date();
-    return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear();
-}
-
+function getDateAsString(d) { var d = new Date(); return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear(); }
 // Add a space between time string and the am/pm indicator
-// *** allows time that can be converted to Date obj *** 
 function getAmPmDateFriendly(str) { return str.replace("am", " am").replace("pm", " pm"); }
-
-//#endregion
-
-// Handle clearing all current intervals that are running
-function clearAllIntervals() {
-    try {
-        clearInterval(Rend.interval);
-        clearInterval(OnyInterval);
-        clearInterval(NefInterval);
-        clearInterval(SongflowerInterval);
-    } catch (error) {
-        return;
-    }
-}
 
 /*
 DEV NOTES:

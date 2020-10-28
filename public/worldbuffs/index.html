@@ -11,11 +11,30 @@
 </head>
 
 <body class="bg-dark text-light">
+    <!-- FOR DEV TESTING -->
+    <button class="position-absolute" style="right:1rem; bottom:1rem;" onclick="test()">test</button>
+
+    <!-- Navbar (fixed bottom) -->
+    <nav id="mainNav" class="navbar sticky-top navbar-dark bg-secondary justify-content-start p-0">
+        <ul class="nav pt-2">
+            <li class="nav-item">
+                <a class="nav-link wowhead-icon" target="_blank" href="https://classic.wowhead.com/">Classic WoWhead</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link warcraftlogs-icon" target="_blank"
+                    href="https://classic.warcraftlogs.com/character/us/fairbanks/gankaskhan">Gankaskhan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link warcraftlogs-icon" target="_blank"
+                    href="https://classic.warcraftlogs.com/character/us/fairbanks/thrallsbro">Thrallsbro</a>
+            </li>
+        </ul>
+    </nav>
+
     <div class="container justify-content-center mt-3 mt-md-4" id="main">
         <h2 class="text-justify">Classic WoW Buff Times</h2>
-
-        <!-- COPY/PASTE TEXT AREA -->
         <div class="form-group">
+            <!-- COPY/PASTE TEXT AREA -->
             <div class="col">
                 <div class="col-form-label" for="timerTextArea">NovaWorldBuff Text</div>
                 <textarea id="timerTextArea" class="form-control" rows="4"></textarea>
@@ -109,17 +128,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Sectional divider -->
-        <hr class="border-light" />
-
-        <div class="container-fluid">
-            
-        </div>
     </div>
-
-    <!-- FOR DEV TESTING -->
-    <button class="position-absolute" style="right:1rem; bottom:2rem;" onclick="test()">test</button>
 
     <!-- Bootstrap scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -135,7 +144,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
         integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
         crossorigin="anonymous"></script>
-
     <!-- Local scripts -->
     <script src="index.js"></script>
 </body>
