@@ -1,5 +1,4 @@
 // Author: John DiTullio aka gankaskhan
-
 // Import the moment routines
 import('../momentify.js').then((module) => { dateroutines = module; });
 // Set defaults for moment.js
@@ -8,6 +7,22 @@ moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
 var ServerTimeZone = (moment().isDST() ? "PST" : "PDT");
 // Set local time zone (EST or EDT)
 var LocalTimeZone = (moment().isDST() ? "EST" : "EDT");
+
+// Get a character's parse data
+var toons = {
+    thrallsbro: [],
+    gankaskhan: []
+};
+
+import('./warcraftlogapi.js').then((module) => {
+    warcraftlogsapi = module;
+    warcraftlogsapi.getToonParses('thrallsbro');
+    toons.gankaskhan = warcraftlogsapi.getToonParses('gankaskhan');
+});
+
+function getLogsForToons() {
+
+}
 
 // Rend 
 var Rend = {
@@ -59,9 +74,6 @@ $(document).ready(function () {
     }
     // text area paste/change event handler
     $('#timerTextArea').on("paste change", pasteeventhandler);
-
-    getToonParses('thrallsbro');
-    getToonParses('gankaskhan');
 });
 
 // Handle parsing NovaWorldBuff string
