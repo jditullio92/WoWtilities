@@ -19,8 +19,6 @@ input {
 }
 
 input.form-control-plaintext {
-    font-size: large;
-    max-width: 6rem;
     text-align: center;
     border: 1px solid #b5b5b5;
 }

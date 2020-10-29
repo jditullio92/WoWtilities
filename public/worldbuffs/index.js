@@ -45,6 +45,8 @@ var NefTime,
 var SongflowerTime;
 var SongflowerInterval;
 
+var characters = [];
+
 // Page load event handler
 $(document).ready(function () {
     // set timers (timeout prevents error when doing replace on string)
@@ -57,6 +59,9 @@ $(document).ready(function () {
     }
     // text area paste/change event handler
     $('#timerTextArea').on("paste change", pasteeventhandler);
+
+    getToonParses('thrallsbro');
+    getToonParses('gankaskhan');
 });
 
 // Handle parsing NovaWorldBuff string
