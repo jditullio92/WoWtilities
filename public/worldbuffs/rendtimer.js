@@ -1,12 +1,15 @@
 // Rend
-let Rend = {
-    time: '',
-    timer: {
-        clear: () => { clearInterval(RendInterval); },
-        start: () => {
-            RendInterval = setInterval(function () {
-                $('#timeUntilRend').val(dateroutines.getDuration(Rend.time));
-            }, 1000);
-        },
-    }
-};
+export function initRend() {
+    return {
+        time: '',
+        interval: '',
+        timer: {
+            clear: () => { clearInterval(Rend.interval); },
+            start: () => {
+                Rend.interval = setInterval(function () {
+                    $('#timeUntilRend').val(dateroutines.getDuration(Rend.time));
+                }, 1000);
+            },
+        }
+    };
+}

@@ -1,4 +1,11 @@
 // Author: John DiTullio aka gankaskhan
+
+let modules = {
+    'moment': '../momentify.js',
+    'warcraftlogsapi': './warcraftlogapi.js',
+    'rendtimer': './rendtimer.js'
+};
+
 // Import the moment routines
 import('../momentify.js').then((module) => { dateroutines = module; });
 // Set defaults for moment.js
@@ -8,31 +15,26 @@ var ServerTimeZone = (moment().isDST() ? "PST" : "PDT");
 // Set local time zone (EST or EDT)
 var LocalTimeZone = (moment().isDST() ? "EST" : "EDT");
 
-// Get a character's parse data
-var toons = {
-    thrallsbro: [],
-    gankaskhan: []
-};
-
-import('./warcraftlogapi.js').then((module) => {
-    warcraftlogsapi = module;
-    warcraftlogsapi.getToonParses('thrallsbro');
-    toons.gankaskhan = warcraftlogsapi.getToonParses('gankaskhan');
-});
-
+// Get Warcraft Logs script and initialize data
+var characters = { thrallsbro: [], gankaskhan: [] };
+import('./warcraftlogapi.js').then((module) => { warcraftlogsapi = module; getLogsForToons(); });
 function getLogsForToons() {
-
+    warcraftlogsapi.getCharacterParses('thrallsbro').then((data) => { characters.thrallsbro = data; });
+    warcraftlogsapi.getCharacterParses('gankaskhan').then((data) => { characters.gankaskhan = data; });
 }
 
+var modRend, Rend;
+import('./rendtimer.js').then((module) => { modRend = module; Rend = modRend.initRend(); });
+
 // Rend 
-var Rend = {
-    time: '',
-    interval: null,
-    timer: {
-        clear: () => { clearInterval(Rend.interval); },
-        start: () => { Rend.interval = setInterval(function () { $('#timeUntilRend').val(dateroutines.getDuration(Rend.time)); }, 1000); },
-    }
-};
+// var Rend = {
+//     time: '',
+//     interval: null,
+//     timer: {
+//         clear: () => { clearInterval(Rend.interval); },
+//         start: () => { Rend.interval = setInterval(function () { $('#timeUntilRend').val(dateroutines.getDuration(Rend.time)); }, 1000); },
+//     }
+// };
 
 // Onyxia
 var OnyTime,
@@ -84,7 +86,7 @@ function pasteEventHandler() {
     if (!timers[0].split("(")[1].split(' ')[0].startsWith("No current")) {
         var RendTimeText = getAmPmDateFriendly(timers[0].split("(")[1].split(' ')[0]);
         // Is there a timer in the pasted text for Rend?
-        Rend.time = new moment(new Date(new Date(getDateAsString() + " " + RendTimeText + " PDT").toISOString()));
+        Rend.time = new moment(new Date(new Date(getDateAsString() + " " + RendTimeText + " " + ServerTimeZone).toISOString()));
         Rend.timer.start(Rend.time); // Start the Rend timer
     } else {
         $('#timeUntilRend').val("--:--:--");
@@ -92,11 +94,11 @@ function pasteEventHandler() {
 
     // Onyxia
     var onyTimeText = getAmPmDateFriendly(timers[1].split("(")[1].split(' ')[0]);
-    Onyxia.time = new moment(new Date(new Date(getDateAsString() + " " + onyTimeText + " PDT").toISOString()));
+    Onyxia.time = new moment(new Date(new Date(getDateAsString() + " " + onyTimeText + " " + ServerTimeZone).toISOString()));
     Onyxia.timer.start();
     // Nefarian
     var nefTimeText = getAmPmDateFriendly(timers[2].split("(")[1].split(' ')[0]);
-    Nefarian.time = new moment(new Date(new Date(getDateAsString() + " " + nefTimeText + " PDT").toISOString()));
+    Nefarian.time = new moment(new Date(new Date(getDateAsString() + " " + nefTimeText + " " + ServerTimeZone).toISOString()));
     Nefarian.timer.start();
 }
 

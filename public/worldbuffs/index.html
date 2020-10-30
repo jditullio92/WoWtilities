@@ -12,14 +12,11 @@
 
 <body class="bg-dark text-light">
     <!-- FOR DEV TESTING -->
-    <button class="position-absolute" style="right:1rem; bottom:1rem;" onclick="test()">test</button>
+    <!-- <button class="position-absolute" style="right:1rem; bottom:1rem;" onclick="test()">test</button> -->
 
-    <!-- Navbar (fixed bottom) -->
-    <nav id="mainNav" class="navbar sticky-top navbar-dark bg-secondary justify-content-start p-0">
+    <!-- Navbar -->
+    <nav id="mainNav" class="navbar fixed-bottom navbar-dark bg-secondary justify-content-start p-0">
         <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link wowhead-icon" target="_blank" href="https://classic.wowhead.com/">WoWhead</a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link warcraftlogs-icon" target="_blank"
                     href="https://classic.warcraftlogs.com/character/us/fairbanks/gankaskhan">Gankaskhan</a>
@@ -28,98 +25,105 @@
                 <a class="nav-link warcraftlogs-icon" target="_blank"
                     href="https://classic.warcraftlogs.com/character/us/fairbanks/thrallsbro">Thrallsbro</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link wowhead-icon" target="_blank" href="https://classic.wowhead.com/">WoWhead</a>
+            </li>
         </ul>
     </nav>
 
     <div class="container justify-content-center mt-3 mt-md-4" id="main">
-        <h2 class="text-justify">Classic WoW Buff Times</h2>
-        <div class="form-group">
-            <!-- COPY/PASTE TEXT AREA -->
-            <div class="col">
-                <div class="col-form-label" for="timerTextArea">NovaWorldBuff Text</div>
-                <textarea id="timerTextArea" class="form-control" rows="4"></textarea>
+        <!-- Sheet -->
+        <div class="bg-light text-dark border rounded p-3 p-md-4">
+            <h2 class="text-justify">Classic WoW Buff Times</h2>
+            <div class="form-group">
+                <!-- COPY/PASTE TEXT AREA -->
+                <div class="col">
+                    <div class="col-form-label" for="timerTextArea">NovaWorldBuff Text</div>
+                    <textarea id="timerTextArea" class="form-control" rows="4"></textarea>
+                </div>
             </div>
-        </div>
 
-        <!-- Sectional divider -->
-        <hr class="border-light" />
+            <!-- Sectional divider -->
+            <hr class="border-light" />
 
-        <!-- WORLD BUFF TIMERS -->
-        <div class="container-fluid text-dark">
-            <div class="row">
-                <!-- Rend Timer (Warchief's Blessing) -->
-                <div class="col-12 col-sm-6">
-                    <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <div class="img-icon rend-icon"></div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">Rend</h5>
-                                    <div class="justify-content-center">
+            <!-- WORLD BUFF TIMERS -->
+            <div class="container-fluid text-dark">
+                <div class="row">
+                    <!-- Rend Timer (Warchief's Blessing) -->
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card border border-light shadow mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <div class="img-icon rend-icon"></div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-header">Rend</div>
+                                    <div class="card-body">
+                                        <div class="justify-content-center">
 
-                                        <input readonly class="form-control-plaintext" id="timeUntilRend" type="text"
-                                            placeholder="--:--:--" />
+                                            <input readonly class="form-control-plaintext" id="timeUntilRend"
+                                                type="text" placeholder="--:--:--" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Onyxia Timer (Rallying Cry) -->
-                <div class="col-12 col-sm-6">
-                    <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <div class="img-icon ony-icon"></div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">Onyxia</h5>
-                                    <div class="justify-content-center">
-                                        <input readonly class="form-control-plaintext" id="timeUntilOny" type="text"
-                                            placeholder="--:--:--" />
+                    <!-- Onyxia Timer (Rallying Cry) -->
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card border border-light shadow mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <div class="img-icon ony-icon"></div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Onyxia</h5>
+                                        <div class="justify-content-center">
+                                            <input readonly class="form-control-plaintext" id="timeUntilOny" type="text"
+                                                placeholder="--:--:--" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Nefarian Timer (Rallying Cry) -->
-                <div class="col-12 col-sm-6">
-                    <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <div class="img-icon nef-icon"></div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">Nefarian</h5>
-                                    <div class="justify-content-center">
-                                        <input readonly class="form-control-plaintext" id="timerNef" type="text"
-                                            placeholder="--:--:--" />
+                    <!-- Nefarian Timer (Rallying Cry) -->
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card border border-light shadow mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <div class="img-icon nef-icon"></div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Nefarian</h5>
+                                        <div class="justify-content-center">
+                                            <input readonly class="form-control-plaintext" id="timerNef" type="text"
+                                                placeholder="--:--:--" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Songflower Timer -->
-                <div class="col-12 col-sm-6">
-                    <div class="card mb-3">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <div class="img-icon sf-icon"></div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">Songflower</h5>
-                                    <div class="justify-content-center">
-                                        <input readonly class="form-control-plaintext" id="timerSongflower" type="text"
-                                            placeholder="--:--:--" />
+
+                    <!-- Songflower Timer -->
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card border border-light shadow mb-3">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <div class="img-icon sf-icon"></div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Songflower</h5>
+                                        <div class="justify-content-center">
+                                            <input readonly class="form-control-plaintext" id="timerSongflower"
+                                                type="text" placeholder="--:--:--" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -142,15 +146,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
     <!-- MomentJs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
         integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
         crossorigin="anonymous"></script>
-
-    <!-- Warcraft Log Api Scripts -->
-    <!-- <script src="./warcraftlogapi.js"></script> -->
-
     <!-- Client script -->
     <script src="index.js"></script>
 </body>
