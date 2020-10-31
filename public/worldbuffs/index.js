@@ -24,7 +24,7 @@ function getLogsForToons() {
 }
 
 var modRend, Rend;
-import('./rendtimer.js').then((module) => { modRend = module; Rend = modRend.initRend(); });
+import('./rendtimer.js').then((module) => { modRend = module; Rend = module.initRend(); });
 
 // Rend 
 // var Rend = {
