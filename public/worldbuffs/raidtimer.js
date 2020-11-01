@@ -2,23 +2,11 @@
 
 // Import the moment routines
 import('../momentify.js').then((module) => { dateroutines = module; });
-// Set defaults for moment.js
-moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
 // Set server time zone (PST or PDT)
 var ServerTimeZone = (moment().isDST() ? "" : "");
 
 // Import the moment routines
 import('./rendtimer.js').then((module) => { Rend = module; });
-
-// // Rend
-// var RendInterval,
-//     Rend = {
-//         time: '',
-//         timer: {
-//             clear: () => { clearInterval(RendInterval); },
-//             start: () => { RendInterval = setInterval(function () { $('#timeUntilRend').val(dateroutines.getDuration(Rend.time)); }, 1000); },
-//         }
-//     };
 
 // Onyxia
 var OnyTime,
@@ -48,19 +36,22 @@ var SongflowerInterval;
 
 // Page load event handler
 $(document).ready(function () {
-    // set timers (timeout prevents error when doing replace on string)
-    function pasteeventhandler() {
-        // Do we have text?
-        if ($('#timerTextArea').val().trim().length > 0) {
-            // Clear all existing intervals
-            clearAllIntervals();
-            // Do event handler
-            setTimeout(function () { pasteEventHandler(); }, 1);
-        }
-    }
+    // Set defaults for moment.js
+    moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
     // text area paste/change event handler
     $('#timerTextArea').on("paste change", pasteeventhandler);
 });
+
+// set timers (timeout prevents error when doing replace on string)
+function pasteeventhandler() {
+    // Do we have text?
+    if ($('#timerTextArea').val().trim().length > 0) {
+        // Clear all existing intervals
+        clearAllIntervals();
+        // Do event handler
+        setTimeout(function () { pasteEventHandler(); }, 1);
+    }
+}
 
 // Handle parsing NovaWorldBuff string
 function pasteEventHandler() {

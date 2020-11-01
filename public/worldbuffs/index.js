@@ -1,19 +1,28 @@
-// Author: John DiTullio aka gankaskhan
+/*
+Author: Gankaskhan (10.30.2020)
+NOTES:
+- Server time is in Pacific Time
+    a. PDT - active
+    b. PST - starts 11/01/2020
 
-let modules = {
-    'moment': '../momentify.js',
-    'warcraftlogsapi': './warcraftlogapi.js',
-    'rendtimer': './rendtimer.js'
-};
+- NWB STRING EXAMPLE:
+Rend: 2 hours 9 minutes. (9:00pm server time)
+Onyxia: 2 hours 39 minutes. (10:00pm server time)
+Nefarian: 5 hours 3 minutes. (11:00pm server time)
+
+*/
 
 // Import the moment routines
-import('../momentify.js').then((module) => { dateroutines = module; });
-// Set defaults for moment.js
-moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
-// Set server time zone (PST or PDT)
-var ServerTimeZone = (moment().isDST() ? "PST" : "PDT");
-// Set local time zone (EST or EDT)
-var LocalTimeZone = (moment().isDST() ? "EST" : "EDT");
+import('../momentify.js').then((module) => { dateroutines = module; initMomentDefaults(); });
+// initialize momentjs defaults
+function initMomentDefaults() {
+    // Set defaults for moment.js
+    moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
+    // Set server time zone (PST or PDT)
+    ServerTimeZone = (moment().isDST() ? "PST" : "PDT");
+}
+
+
 
 // Get Warcraft Logs script and initialize data
 var characters = { thrallsbro: [], gankaskhan: [] };
@@ -106,25 +115,3 @@ function pasteEventHandler() {
 function getDateAsString(d) { var d = new Date(); return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear(); }
 // Add a space between time string and the am/pm indicator
 function getAmPmDateFriendly(str) { return str.replace("am", " am").replace("pm", " pm"); }
-
-/*
-DEV NOTES:
-i.  Server time is in Pacific Time
-        a. PDT - active
-        b. PST - starts 11/01/2020
-
-ii. EXAMPLE NWB STRING:
-        Rend: 2 hours 9 minutes. (9:00pm server time)
-        Onyxia: 2 hours 39 minutes. (10:00pm server time)
-        Nefarian: 5 hours 3 minutes. (11:00pm server time)
-*/
-function test() {
-    $('#timerTextArea').val("Rend: 1 hour 53 minutes. (9:51pm server time)\r\nOnyxia: 4 hours 34 minutes. (10:32pm server time)\r\nNefarian: 6 hours 19 minutes. (11:16pm server time)").trigger("change");
-}
-
-
-// IDEA: Reminder for raid times
-function displayRaidReminder() {
-
-}
-// IDEA: Warcraft logs ?

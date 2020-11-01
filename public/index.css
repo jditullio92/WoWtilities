@@ -1,13 +1,13 @@
-html {
-    font-size: 15px;
-}
-
-.bg-dark {
-    background-color: #555555 !important;
+html, body {
+    height: 100vh;
+    background-color: #1d4c7e;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .bg-secondary {
-    background-color: #3a3a3a !important;
+    background-color: #1058a7 !important;
 }
 
 textarea {
@@ -29,6 +29,7 @@ input.form-control-plaintext {
     background-size: 99% 99%;
     background-repeat: no-repeat;
     background-position: center;
+    border-radius: inherit;
 }
 
 .nef-icon {
@@ -57,7 +58,7 @@ input.form-control-plaintext {
     padding: 0 5px;
 }
 
-#mainNav a {
+#navFixedBottom a {
     display: inherit;
     align-items: inherit;
     color: #dedede !important;
@@ -65,21 +66,18 @@ input.form-control-plaintext {
     text-shadow: 1px 1px 2px #606060;
 }
 
-#mainNav a:active #mainNav a:hover,
-#mainNav a:focus {
+#navFixedBottom a:active #navFixedBottom a:hover, #navFixedBottom a:focus {
     color: #fff !important;
 }
 
-#mainNav .nav-item {
+#navFixedBottom .nav-item {
     display: inline-flex;
     align-items: center;
     background-color: transparent;
-    padding: 0 .25rem;
+    padding: .3rem;
 }
 
-#mainNav .nav-item:active,
-#mainNav .nav-item:hover,
-#mainNav .nav-item:focus {
+#navFixedBottom .nav-item:active, #navFixedBottom .nav-item:hover, #navFixedBottom .nav-item:focus {
     animation: navItemHover 0.5s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -88,10 +86,9 @@ input.form-control-plaintext {
 
 @keyframes navItemHover {
     from {
-        background-color: rgb(37, 37, 37, 0);
+        background-color: rgb(0, 0, 0, 0);
     }
-
     to {
-        background-color: rgb(37, 37, 37, 1);
+        background-color: rgba(0, 0, 0, 0.3);
     }
 }
