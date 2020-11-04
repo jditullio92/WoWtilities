@@ -4,12 +4,12 @@ const ApiUrl = "https://classic.warcraftlogs.com:443/v1";
 // Api key
 const ApiKey = "f5419b12c6f4ad49d9ee69874a61b0c2";
 
-// ex: https://classic.warcraftlogs.com:443/v1/zones?api_key=f5419b12c6f4ad49d9ee69874a61b0c2
+// ex: https://classic.warcraftlogs.com:443/v1/zones?api_key=API_KEY
 export function getZones() {
 
 }
 
-// ex: https://classic.warcraftlogs.com:443/v1/parses/character/thrallsbro/fairbanks/US?api_key=f5419b12c6f4ad49d9ee69874a61b0c2
+// ex: https://classic.warcraftlogs.com:443/v1/parses/character/thrallsbro/fairbanks/US?api_key=API_KEY
 export async function getCharacterParses(character) {
     let result;
     try {

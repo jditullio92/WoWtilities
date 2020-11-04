@@ -13,14 +13,15 @@ Nefarian: 5 hours 3 minutes. (11:00pm server time)
 */
 
 // Import the moment routines
-import('../momentify.js').then((module) => { dateroutines = module; initMomentDefaults(); });
+import('./momentify.js').then((module) => { dateroutines = module; module.initMomentDefaults(); });
+
 // initialize momentjs defaults
-function initMomentDefaults() {
-    // Set defaults for moment.js
-    moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
-    // Set server time zone (PST or PDT)
-    ServerTimeZone = (moment().isDST() ? "PST" : "PDT");
-}
+// function initMomentDefaults() {
+//     // Set defaults for moment.js
+//     moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
+//     // Set server time zone (PST or PDT)
+//     ServerTimeZone = (moment().isDST() ? "PST" : "PDT");
+// }
 
 
 
@@ -32,18 +33,8 @@ function getLogsForToons() {
     warcraftlogsapi.getCharacterParses('gankaskhan').then((data) => { characters.gankaskhan = data; });
 }
 
-var modRend, Rend;
-import('./rendtimer.js').then((module) => { modRend = module; Rend = module.initRend(); });
-
-// Rend 
-// var Rend = {
-//     time: '',
-//     interval: null,
-//     timer: {
-//         clear: () => { clearInterval(Rend.interval); },
-//         start: () => { Rend.interval = setInterval(function () { $('#timeUntilRend').val(dateroutines.getDuration(Rend.time)); }, 1000); },
-//     }
-// };
+var Rend;
+import('./rendtimer.js').then((module) => { Rend = module.initRend(); });
 
 // Onyxia
 var OnyTime,
