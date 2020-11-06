@@ -12,22 +12,24 @@ Nefarian: 5 hours 3 minutes. (11:00pm server time)
 
 */
 
-// Import the moment routines
-import('./momentify.js').then((module) => { dateroutines = module; module.initMomentDefaults(); });
+// Import moment routines
+import('./momentify.js').then((module) => { dateroutines = module; dateroutines.initMomentDefaults(); });
 
-// initialize momentjs defaults
-// function initMomentDefaults() {
-//     // Set defaults for moment.js
-//     moment.defaultFormat = "MM/DD/.YYYY h:mm:ss a";
-//     // Set server time zone (PST or PDT)
-//     ServerTimeZone = (moment().isDST() ? "PST" : "PDT");
-// }
-
-
-
-// Get Warcraft Logs script and initialize data
+// Init characters to get log data for
 var characters = { thrallsbro: [], gankaskhan: [] };
+characters = [
+    {
+        name: "thrallsbro",
+        logs: ''
+    },
+    {
+        name: "gankaskhan",
+        logs: ''
+    }
+];
+// Get Warcraft Logs script and initialize data
 import('./warcraftlogapi.js').then((module) => { warcraftlogsapi = module; getLogsForToons(); });
+
 function getLogsForToons() {
     warcraftlogsapi.getCharacterParses('thrallsbro').then((data) => { characters.thrallsbro = data; });
     warcraftlogsapi.getCharacterParses('gankaskhan').then((data) => { characters.gankaskhan = data; });

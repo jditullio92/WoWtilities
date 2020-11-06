@@ -19,9 +19,7 @@
   "homepage": "https://github.com/jditullio92/WoWtilities#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
-    "bootstrap": "^4.5.3",
-    "moment": "^2.29.1",
-    "moment-timezone": "^0.5.31"
+    "bootstrap": "^4.5.3"
   },
   "devDependencies": {
     "http-server": "^0.12.3"
