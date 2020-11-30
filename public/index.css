@@ -6,7 +6,7 @@ body {
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    padding: 0.5rem .75rem;
+    padding: 4rem .75rem 0.5rem 0.75rem;
     overflow: hidden;
 }
 
