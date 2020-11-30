@@ -6,23 +6,18 @@ Onyxia: 2 hours 39 minutes. (10:00pm server time)
 Nefarian: 5 hours 3 minutes. (11:00pm server time)
 */
 
-// Global
-let momentify, Rend, Onyxia, Nefarian;
+// Global(s) - DateTimes
+let momentify, ServerTimeZone;
+// Global(s) - Timer Objects
+let Rend, Onyxia, Nefarian;
+// Global(s) - Character List
+let characters = { thrallsbro: [], gankaskhan: [] };
+let Zones = [];
 
 // Import moment/datetime routines
 import('./momentify.js').then((module) => { momentify = module; momentify.initMomentDefaults(); });
-
-// Init characters to get log data for
-let characters = { thrallsbro: [], gankaskhan: [] };
 // Get Warcraft Logs script and initialize data
 import('./warcraftlogapi.js').then((module) => { getLogsForToons(module); });
-
-// Fetch warcraftlogs data for characters
-function getLogsForToons(module) {
-    warcraftlogsapi = module;
-    warcraftlogsapi.getCharacterParses('thrallsbro').then((data) => { characters.thrallsbro = data; });
-    warcraftlogsapi.getCharacterParses('gankaskhan').then((data) => { characters.gankaskhan = data; });
-}
 
 // Initialize world buff timer objects
 import('./rendtimer.js').then((module) => { Rend = module.initRend(); });
@@ -52,7 +47,18 @@ $(document).ready(function () {
             $('#table-logs-body').html(html);
         }
     });
+
+    // Set default server timezone
+    ServerTimeZone = (moment().isDST() ? "PDT" : "PST");
 });
+
+// Fetch warcraftlogs data for characters
+function getLogsForToons(module) {
+    warcraftlogsapi = module;
+    warcraftlogsapi.getZones().then((data) => { Zones = data; });
+    warcraftlogsapi.getCharacterParses('thrallsbro').then((data) => { characters.thrallsbro = data; });
+    warcraftlogsapi.getCharacterParses('gankaskhan').then((data) => { characters.gankaskhan = data; });
+}
 
 // Create table-log tbody elements from character data
 async function createTableLogsBody(charName) {
@@ -60,7 +66,6 @@ async function createTableLogsBody(charName) {
     // Does the character exist in the global list?
     if (!!characters[charName]) {
         let logdata = characters[charName];
-
         for (encounter of logdata) {
             html += '<tr>' +
                 '<td>' + Math.ceil(encounter.percentile) + '% </td>' +
@@ -74,39 +79,44 @@ async function createTableLogsBody(charName) {
 // Handle parsing NovaWorldBuff string
 function pasteEventHandler() {
     // Get string as array
-    var timers = $('#timerTextArea').val().split("\n");
+    let timers = $('#timerTextArea').val().split("\n");
+
+    const timerIsEmpty = (time) => {
+        let result = (time.split("(")[1].split(' ')[0].startsWith("No current"));
+        return result;
+    };
+
     // Rend
-    if (!timers[0].split("(")[1].split(' ')[0].startsWith("No current")) {
-        var RendTimeText = getAmPmDateFriendly(timers[0].split("(")[1].split(' ')[0]);
+    // if (!timers[0].split("(")[1].split(' ')[0].startsWith("No current")) {
+    if (!timerIsEmpty(timers[0])) {
+        let RendTimeText = getAmPmDateFriendly(timers[0].split("(")[1].split(' ')[0]);
         // Is there a timer in the pasted text for Rend?
         Rend.time = new moment(new Date(new Date(getDateAsString() + " " + RendTimeText + " " + ServerTimeZone).toISOString()));
         Rend.timer.start(Rend.time); // Start the Rend timer
     } else {
-        $('#timeUntilRend').val("--:--:--");
+        $('#timeUntilRend').val("No Current Timer...");
     }
 
     // Onyxia
-    var onyTimeText = getAmPmDateFriendly(timers[1].split("(")[1].split(' ')[0]);
-    Onyxia.time = new moment(new Date(new Date(getDateAsString() + " " + onyTimeText + " " + ServerTimeZone).toISOString()));
-    Onyxia.timer.start();
+    if (!timerIsEmpty(timers[1])) {
+        let onyTimeText = getAmPmDateFriendly(timers[1].split("(")[1].split(' ')[0]);
+        Onyxia.time = new moment(new Date(new Date(getDateAsString() + " " + onyTimeText + " " + ServerTimeZone).toISOString()));
+        Onyxia.timer.start();
+    } else {
+
+    }
+
     // Nefarian
-    var nefTimeText = getAmPmDateFriendly(timers[2].split("(")[1].split(' ')[0]);
-    Nefarian.time = new moment(new Date(new Date(getDateAsString() + " " + nefTimeText + " " + ServerTimeZone).toISOString()));
-    Nefarian.timer.start();
+    if (!timerIsEmpty(timers[2])) {
+        let nefTimeText = getAmPmDateFriendly(timers[2].split("(")[1].split(' ')[0]);
+        Nefarian.time = new moment(new Date(new Date(getDateAsString() + " " + nefTimeText + " " + ServerTimeZone).toISOString()));
+        Nefarian.timer.start();
+    } else {
+
+    }
 }
 
 // Returns date as a string (ex: "9/19/2020")
 function getDateAsString(d) { var d = new Date(); return (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear(); }
 // Add a space between time string and the am/pm indicator
 function getAmPmDateFriendly(str) { return str.replace("am", " am").replace("pm", " pm"); }
-
-// Base WB Timer object
-const createTimerObj = () => {
-    return {
-        time: '',
-        timer: {
-            clear: () => { clearInterval(OnyInterval); },
-            start: () => { OnyInterval = setInterval(function () { $('#timeUntilOny').val(momentify.getDuration(Onyxia.time)); }, 1000); },
-        }
-    };
-};
