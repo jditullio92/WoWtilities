@@ -1,13 +1,15 @@
 // Rend
 export function initRend() {
     return {
-        time: '',
+        element: document.getElementById("timeUntilRend"),
         interval: '',
+        time: '',
         timer: {
             clear: () => { clearInterval(Rend.interval); },
             start: () => {
                 Rend.interval = setInterval(function () {
-                    $('#timeUntilRend').val(dateroutines.getDuration(Rend.time));
+                    let duration = moment.duration(Rend.time.diff(new moment())).humanize();
+                    Rend.element.value = duration;
                 }, 1000);
             },
         }
