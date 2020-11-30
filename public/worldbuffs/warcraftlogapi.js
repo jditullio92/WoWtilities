@@ -1,12 +1,22 @@
 // Warcraft Logs Api (v1) 
-// see: https://classic.warcraftlogs.com/v1/docs/
+// api docs: https://classic.warcraftlogs.com/v1/docs/
 const ApiUrl = "https://classic.warcraftlogs.com:443/v1";
-// Api key
 const ApiKey = "f5419b12c6f4ad49d9ee69874a61b0c2";
 
 // ex: https://classic.warcraftlogs.com:443/v1/zones?api_key=API_KEY
-export function getZones() {
-
+export async function getZones() {
+    let result;
+    try {
+        result = await $.ajax({
+            type: "GET",
+            crossOrigin: true,
+            dataType: "json",
+            url: ApiUrl + '/zones?api_key=' + ApiKey
+        });
+    } catch (error) {
+        console.error(error);
+    }
+    return result;
 }
 
 // ex: https://classic.warcraftlogs.com:443/v1/parses/character/thrallsbro/fairbanks/US?api_key=API_KEY
