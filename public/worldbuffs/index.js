@@ -70,6 +70,7 @@ async function logtableTargetChange() {
         // Generate table body
         await createTableLogsBody(target);
     }
+    return;
 }
 
 // Create table-log tbody elements from character data
@@ -88,6 +89,7 @@ async function createTableLogsBody(charName) {
                 '</tr>';
         }
     }
+    $('#table-logs caption').html(charName);
     $('#table-logs-body').html(html);
     $('#table-logs').removeClass("d-none");
     return;
