@@ -65,17 +65,11 @@ async function logtableTargetChange() {
     if (target.length > 0) {
         // If no data for character exists then get it
         if (characters[target] === '') {
-            characters[target] = await getCharacterLogs(target);
+            characters[target] = await warcraftlogsapi.getCharacterParses(target);
         }
         // Generate table body
         await createTableLogsBody(target);
     }
-}
-
-// Fetch character logs from warcraft logs api
-async function getCharacterLogs(character) {
-    let result = await warcraftlogsapi.getCharacterParses(character);
-    return result;
 }
 
 // Create table-log tbody elements from character data
