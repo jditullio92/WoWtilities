@@ -6,18 +6,22 @@ Onyxia: 2 hours 39 minutes. (10:00pm server time)
 Nefarian: 5 hours 3 minutes. (11:00pm server time)
 */
 
-// Global(s) - DateTimes
+// Global(s) - Momentjs/Dates
 let momentify, ServerTimeZone;
 // Global(s) - Timer Objects
 let Rend, Onyxia, Nefarian;
 // Global(s) - Character List
-let characters = { thrallsbro: [], gankaskhan: [] };
+let characters = { thrallsbro: '', gankaskhan: '' };
 let Zones = [];
 
 // Import moment/datetime routines
 import('./momentify.js').then((module) => { momentify = module; momentify.initMomentDefaults(); });
 // Get Warcraft Logs script and initialize data
-import('./warcraftlogapi.js').then((module) => { getLogsForToons(module); });
+import('./warcraftlogapi.js').then((module) => {
+    warcraftlogsapi = module;
+    // Get Warcraft Log Zone Data
+    getWarcraftLogZones();
+});
 
 // Initialize world buff timer objects
 import('./rendtimer.js').then((module) => { Rend = module.initRend(); });
@@ -25,39 +29,56 @@ import('./onyxiatimer.js').then((module) => { Onyxia = module.initOnyxia(); });
 import('./nefariantimer.js').then((module) => { Nefarian = module.initNefarian(); });
 
 // Page load event handler
-$(document).ready(function () {
-    // set timers (timeout prevents error when doing replace on string)
-    function pasteeventhandler() {
+$(document).ready(async function () {
+    // Set default server timezone
+    ServerTimeZone = (moment().isDST() ? "PDT" : "PST");
+
+    // text area paste/change event handler
+    $('#timerTextArea').on("paste change", function () {
         // Do we have text?
-        if ($('#timerTextArea').val().trim().length > 0) {
+        if ($(this).val().trim().length > 0) {
             // Do event handler
             setTimeout(function () { pasteEventHandler(); }, 1);
         }
-    }
-    // text area paste/change event handler
-    $('#timerTextArea').on("paste change", pasteeventhandler);
+    });
 
     // Nav-Tab event handler
     $('a[data-toggle="tab"]').on('shown.bs.tab', async function (e) {
         // warcraft logs tab
         if (e.target.hash === "#tab-warcraftlogs") {
-            // Create the table body elements from data
-            let html = await createTableLogsBody("thrallsbro");
-            // Set content for <tbody>
-            $('#table-logs-body').html(html);
+            await logtableTargetChange();
         }
     });
 
-    // Set default server timezone
-    ServerTimeZone = (moment().isDST() ? "PDT" : "PST");
+    $("#selCharacter").on("change", async function (e) {
+        await logtableTargetChange();
+    });
 });
 
-// Fetch warcraftlogs data for characters
-function getLogsForToons(module) {
-    warcraftlogsapi = module;
-    warcraftlogsapi.getZones().then((data) => { Zones = data; });
-    warcraftlogsapi.getCharacterParses('thrallsbro').then((data) => { characters.thrallsbro = data; });
-    warcraftlogsapi.getCharacterParses('gankaskhan').then((data) => { characters.gankaskhan = data; });
+async function logtableTargetChange() {
+    // Get the selected option's value
+    let target = $("#selCharacter option:selected").val();
+    // If not empty fill table with their
+    if (target.length > 0) {
+        // If no data for character exists then get it
+        if (characters[target] === '') {
+            characters[target] = await getCharacterLogs(target);
+        }
+        // Generate table body
+        await createTableLogsBody(target);
+    }
+}
+
+// Request Zone data from warcraft logs api
+async function getWarcraftLogZones() {
+    let data = await warcraftlogsapi.getZones();
+    return data;
+}
+
+// Fetch character logs from warcraft logs api
+async function getCharacterLogs(character) {
+    let result = await warcraftlogsapi.getCharacterParses(character);
+    return result;
 }
 
 // Create table-log tbody elements from character data
@@ -69,11 +90,16 @@ async function createTableLogsBody(charName) {
         for (encounter of logdata) {
             html += '<tr>' +
                 '<td>' + Math.ceil(encounter.percentile) + '% </td>' +
+                '<td>' + encounter.rank + '</td>' +
+                '<td>' + encounter.total + '</td>' +
                 '<td>' + encounter.ilvlKeyOrPatch + '</td>' +
+                '<td>' + moment(encounter.startTime).format() + '</td>' +
                 '</tr>';
         }
     }
-    return html;
+    $('#table-logs-body').html(html);
+    $('#table-logs').removeClass("d-none");
+    return;
 }
 
 // Handle parsing NovaWorldBuff string

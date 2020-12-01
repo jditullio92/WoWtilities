@@ -1,13 +1,11 @@
-html,
-body {
+html, body {
     font-family: 'Ubuntu', sans-serif;
     height: 100vh;
     background-color: #1d4c7e;
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    padding: 4rem .75rem 0.5rem 0.75rem;
-    overflow: hidden;
+    padding: 3.5rem .5rem 0.5rem 0.5rem;
 }
 
 #main {
@@ -66,7 +64,7 @@ input.form-control-plaintext {
     padding: 0 5px;
 }
 
-#navFixedBottom a {
+#navFixed a {
     display: inherit;
     align-items: inherit;
     color: #dedede !important;
@@ -74,21 +72,18 @@ input.form-control-plaintext {
     text-shadow: 1px 1px 2px #606060;
 }
 
-#navFixedBottom a:active #navFixedBottom a:hover,
-#navFixedBottom a:focus {
+#navFixed a:active #navFixed a:hover, #navFixed a:focus {
     color: #fff !important;
 }
 
-#navFixedBottom .nav-item {
+#navFixed .nav-item {
     display: inline-flex;
     align-items: center;
     background-color: transparent;
     padding: .3rem;
 }
 
-#navFixedBottom .nav-item:active,
-#navFixedBottom .nav-item:hover,
-#navFixedBottom .nav-item:focus {
+#navFixed .nav-item:active, #navFixed .nav-item:hover, #navFixed .nav-item:focus {
     animation: navItemHover 0.5s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -99,7 +94,6 @@ input.form-control-plaintext {
     from {
         background-color: rgb(0, 0, 0, 0);
     }
-
     to {
         background-color: rgba(0, 0, 0, 0.3);
     }
