@@ -15,12 +15,15 @@ let characters = { thrallsbro: '', gankaskhan: '' };
 let Zones = [];
 
 // Import moment/datetime routines
-import('./momentify.js').then((module) => { momentify = module; momentify.initMomentDefaults(); });
+import('./momentify.js').then((module) => {
+    momentify = module;
+    momentify.initMomentDefaults();
+});
+
 // Get Warcraft Logs script and initialize data
-import('./warcraftlogapi.js').then((module) => {
+import('./warcraftlogapi.js').then(async (module) => {
     warcraftlogsapi = module;
-    // Get Warcraft Log Zone Data
-    getWarcraftLogZones();
+    Zones = await warcraftlogsapi.getZones();
 });
 
 // Initialize world buff timer objects
@@ -69,12 +72,6 @@ async function logtableTargetChange() {
     }
 }
 
-// Request Zone data from warcraft logs api
-async function getWarcraftLogZones() {
-    let data = await warcraftlogsapi.getZones();
-    return data;
-}
-
 // Fetch character logs from warcraft logs api
 async function getCharacterLogs(character) {
     let result = await warcraftlogsapi.getCharacterParses(character);
@@ -113,14 +110,13 @@ function pasteEventHandler() {
     };
 
     // Rend
-    // if (!timers[0].split("(")[1].split(' ')[0].startsWith("No current")) {
     if (!timerIsEmpty(timers[0])) {
         let RendTimeText = getAmPmDateFriendly(timers[0].split("(")[1].split(' ')[0]);
-        // Is there a timer in the pasted text for Rend?
         Rend.time = new moment(new Date(new Date(getDateAsString() + " " + RendTimeText + " " + ServerTimeZone).toISOString()));
-        Rend.timer.start(Rend.time); // Start the Rend timer
+        Rend.timer.start(Rend.time);
     } else {
-        $('#timeUntilRend').val("No Current Timer...");
+        Rend.element.value = "No Current Timer";
+        // $('#timeUntilRend').val("No Current Timer...");
     }
 
     // Onyxia
