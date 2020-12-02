@@ -47,9 +47,9 @@ $(document).ready(async function () {
 
     // Nav-Tab event handler
     $('a[data-toggle="tab"]').on('shown.bs.tab', async function (e) {
-        // warcraft logs tab
         if (e.target.hash === "#tab-warcraftlogs") {
             await logtableTargetChange();
+            $('#selCharacter').focus();
         }
     });
 
@@ -81,15 +81,13 @@ async function createTableLogsBody(charName) {
         let logdata = characters[charName];
         for (encounter of logdata) {
             html += '<tr>' +
-                '<td>' + Math.ceil(encounter.percentile) + '% </td>' +
+                '<td>' + parseFloat(encounter.percentile).toPrecision(4) + '% </td>' +
                 '<td>' + encounter.rank + '</td>' +
-                '<td>' + encounter.total + '</td>' +
-                '<td>' + encounter.ilvlKeyOrPatch + '</td>' +
-                '<td>' + moment(encounter.startTime).format() + '</td>' +
+                '<td>' + parseFloat(encounter.total).toPrecision(5) + '</td>' +
+                '<td>' + moment(encounter.startTime).format().split(" ")[0] + '</td>' +
                 '</tr>';
         }
     }
-    $('#table-logs caption').html(charName);
     $('#table-logs-body').html(html);
     $('#table-logs').removeClass("d-none");
     return;

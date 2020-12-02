@@ -30,7 +30,7 @@
         </ul>
     </nav>
 
-    <div class="w-75 w-md-50 shadow rounded justify-content-center mx-auto" id="main">
+    <div class="mh-100 w-75 w-md-50 shadow rounded overflow-auto justify-content-center mx-auto" id="main">
         <!-- Nav (tabs) -->
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
@@ -43,11 +43,11 @@
             </li>
         </ul>
         <!-- Tab Content Container -->
-        <div class="tab-content">
+        <div class="tab-content py-3">
             <!-- Warcraft Logs Tab -->
             <div class="tab-pane fade active show" id="tab-warcraftlogs" role="tabpanel"
                 aria-labelledby="tab-warcraftlogs">
-                <div class="container py-3">
+                <div class="container">
                     <!-- Character selection -->
                     <div class="form-row">
                         <label class="col-form-label" for="selCharacter">Character</label>
@@ -63,14 +63,13 @@
                     </div>
 
                     <!-- Logs Table -->
-                    <table id="table-logs" class="d-none table table-striped table-light table-hover">
-                        <caption class="text-capitalize"></caption>
+                    <table id="table-logs"
+                        class="d-none table table-sm table-striped table-light table-hover border text-center mt-4">
                         <thead>
                             <tr>
-                                <th scope="col">Rank %</th>
+                                <th scope="col">Parse %</th>
                                 <th scope="col">Rank</th>
                                 <th scope="col">All-Star</th>
-                                <th scope="col">ilvl</th>
                                 <th scope="col">Date</th>
                             </tr>
                         </thead>
