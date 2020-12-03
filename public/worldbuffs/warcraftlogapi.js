@@ -20,14 +20,30 @@ export async function getZones() {
 }
 
 // ex: https://classic.warcraftlogs.com:443/v1/parses/character/thrallsbro/fairbanks/US?api_key=API_KEY
-export async function getCharacterParses(character) {
+export async function getCharacterParses(options) {
     let result;
     try {
         result = await $.ajax({
             type: "GET",
             crossOrigin: true,
             dataType: "json",
-            url: ApiUrl + '/parses/character/' + character + '/fairbanks/US?api_key=' + ApiKey
+            url: ApiUrl + '/parses/character/' + options.character + '/fairbanks/US?zone=' + options.zone + '&api_key=' + ApiKey
+        });
+    } catch (error) {
+        console.error(error);
+    }
+    return result;
+}
+
+// ex: https://classic.warcraftlogs.com:443/v1/rankings/character/thrallsbro/fairbanks/US?api_key=API_KEY
+export async function getCharacterRankings(options) {
+    let result;
+    try {
+        result = await $.ajax({
+            type: "GET",
+            crossOrigin: true,
+            dataType: "json",
+            url: ApiUrl + '/rankings/character/' + options.character + '/fairbanks/US?zone=' + options.zone + '&api_key=' + ApiKey
         });
     } catch (error) {
         console.error(error);

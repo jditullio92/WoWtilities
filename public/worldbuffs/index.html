@@ -18,6 +18,10 @@
         <ul class="nav">
             <li class="nav-item">
                 <a class="nav-link warcraftlogs-icon" target="_blank"
+                    href="https://classic.warcraftlogs.com/v1/docs/">api docs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link warcraftlogs-icon" target="_blank"
                     href="https://classic.warcraftlogs.com/character/us/fairbanks/gankaskhan">Gankaskhan</a>
             </li>
             <li class="nav-item">
@@ -63,14 +67,14 @@
                     </div>
 
                     <!-- Logs Table -->
-                    <table id="table-logs"
-                        class="d-none table table-sm table-striped table-light table-hover border text-center mt-4">
+                    <table id="table-logs" class="d-none table table-striped table-light table-hover border mt-4">
                         <thead>
                             <tr>
-                                <th scope="col">Parse %</th>
+                                <th scope="col">Percentile</th>
                                 <th scope="col">Rank</th>
                                 <th scope="col">All-Star</th>
                                 <th scope="col">Date</th>
+                                <th scope="col"> </th>
                             </tr>
                         </thead>
                         <tbody id="table-logs-body"></tbody>
@@ -161,6 +165,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal when loading -->
+    <div id="loadingModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="loading"></div>
 
     <!-- Bootstrap scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"

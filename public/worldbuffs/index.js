@@ -11,7 +11,18 @@ let momentify, ServerTimeZone;
 // Global(s) - Timer Objects
 let Rend, Onyxia, Nefarian;
 // Global(s) - Character List
-let characters = { thrallsbro: '', gankaskhan: '' };
+const char = () => {
+    return {
+        parses: '',
+        rankings: ''
+    }
+};
+
+let characters = {
+    thrallsbro: char(),
+    gankaskhan: char()
+};
+
 let Zones = [];
 
 // Import moment/datetime routines
@@ -30,6 +41,17 @@ import('./warcraftlogapi.js').then(async (module) => {
 import('./rendtimer.js').then((module) => { Rend = module.initRend(); });
 import('./onyxiatimer.js').then((module) => { Onyxia = module.initOnyxia(); });
 import('./nefariantimer.js').then((module) => { Nefarian = module.initNefarian(); });
+
+
+// $('#loadingModal')
+//     .ajaxStart(function () {
+//         console.log("ajaxstart");
+//         $(this).modal('show')();
+//     })
+//     .ajaxStop(function () {
+//         console.log("ajaxstop");
+//         $(this).modal('hide')();
+//     });
 
 // Page load event handler
 $(document).ready(async function () {
@@ -56,18 +78,34 @@ $(document).ready(async function () {
     $("#selCharacter").on("change", async function (e) {
         await logtableTargetChange();
     });
+
+    // Setup options for #loadingModal
+    $(document).ajaxStart(function () {
+        $('#loadingModal').modal('show');
+    });
+
+    $(document).ajaxStop(function () {
+        $('#loadingModal').modal('hide');
+    });
 });
 
 async function logtableTargetChange() {
+    let zone = '1005';
     // Get the selected option's value
     let target = $("#selCharacter option:selected").val();
     // If not empty fill table with their
     if (target.length > 0) {
-        // If no data for character exists then get it
-        if (characters[target] === '') {
-            characters[target] = await warcraftlogsapi.getCharacterParses(target);
+        // If no parse data for character exists then get it
+        if (characters[target].parses === '') {
+            let request = { character: target, zone: zone };
+            characters[target].parses = await warcraftlogsapi.getCharacterParses(request);
         }
-        // Generate table body
+        // If no ranking data for character exists then get it
+        if (characters[target].rankings === '') {
+            let request = { character: target, zone: zone };
+            characters[target].rankings = await warcraftlogsapi.getCharacterRankings(request);
+        }
+        // Generate table body`
         await createTableLogsBody(target);
     }
     return;
@@ -78,13 +116,26 @@ async function createTableLogsBody(charName) {
     let html = '';
     // Does the character exist in the global list?
     if (!!characters[charName]) {
-        let logdata = characters[charName];
-        for (encounter of logdata) {
+        // Create table parse data
+        let parses = characters[charName].parses;
+        for (encounter of parses) {
             html += '<tr>' +
                 '<td>' + parseFloat(encounter.percentile).toPrecision(4) + '% </td>' +
                 '<td>' + encounter.rank + '</td>' +
                 '<td>' + parseFloat(encounter.total).toPrecision(5) + '</td>' +
                 '<td>' + moment(encounter.startTime).format().split(" ")[0] + '</td>' +
+                '<td class="text-end"><small>P</small></td>' +
+                '</tr>';
+        }
+
+        let rankings = characters[charName].rankings;
+        for (encounter of rankings) {
+            html += '<tr>' +
+                '<td>' + parseFloat(encounter.percentile).toPrecision(4) + '% </td>' +
+                '<td>' + encounter.rank + '</td>' +
+                '<td>' + parseFloat(encounter.total).toPrecision(5) + '</td>' +
+                '<td>' + moment(encounter.startTime).format().split(" ")[0] + '</td>' +
+                '<td class="text-end"><small>R</small></td>' +
                 '</tr>';
         }
     }
