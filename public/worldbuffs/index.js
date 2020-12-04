@@ -42,17 +42,6 @@ import('./rendtimer.js').then((module) => { Rend = module.initRend(); });
 import('./onyxiatimer.js').then((module) => { Onyxia = module.initOnyxia(); });
 import('./nefariantimer.js').then((module) => { Nefarian = module.initNefarian(); });
 
-
-// $('#loadingModal')
-//     .ajaxStart(function () {
-//         console.log("ajaxstart");
-//         $(this).modal('show')();
-//     })
-//     .ajaxStop(function () {
-//         console.log("ajaxstop");
-//         $(this).modal('hide')();
-//     });
-
 // Page load event handler
 $(document).ready(async function () {
     // Set default server timezone
