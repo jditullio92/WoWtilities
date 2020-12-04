@@ -113,7 +113,7 @@ async function createTableLogsBody(charName) {
                 '<td>' + encounter.rank + '</td>' +
                 '<td>' + parseFloat(encounter.total).toPrecision(5) + '</td>' +
                 '<td>' + moment(encounter.startTime).format().split(" ")[0] + '</td>' +
-                '<td class="text-end"><small>P</small></td>' +
+                '<td class="text-right"><small>P</small></td>' +
                 '</tr>';
         }
 
@@ -124,7 +124,7 @@ async function createTableLogsBody(charName) {
                 '<td>' + encounter.rank + '</td>' +
                 '<td>' + parseFloat(encounter.total).toPrecision(5) + '</td>' +
                 '<td>' + moment(encounter.startTime).format().split(" ")[0] + '</td>' +
-                '<td class="text-end"><small>R</small></td>' +
+                '<td class="text-right"><small>R</small></td>' +
                 '</tr>';
         }
     }
