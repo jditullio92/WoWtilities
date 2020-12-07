@@ -50,21 +50,30 @@
             </li>
         </ul>
         <!-- Tab Content Container -->
-        <div class="tab-content py-3">
+        <div class="tab-content">
             <!-- Warcraft Logs Tab -->
             <div class="tab-pane fade active show" id="tab-warcraftlogs" role="tabpanel"
                 aria-labelledby="tab-warcraftlogs">
-                <div class="container">
+                <div class="container py-3">
                     <!-- Character selection -->
                     <div class="form-row">
                         <label class="col-form-label" for="selCharacter">Character</label>
-                        <div class="col-auto">
-                            <div class="input-group">
-                                <select class="custom-select" id="selCharacter">
-                                    <option value="" selected></option>
-                                    <option value="gankaskhan">Gankaskhan</option>
-                                    <option value="thrallsbro">Thrallsbro</option>
-                                </select>
+                        <div class="col">
+                            <select class="custom-select" id="selCharacter">
+                                <option value="" selected></option>
+                                <option value="gankaskhan">Gankaskhan</option>
+                                <option value="thrallsbro">Thrallsbro</option>
+                            </select>
+                        </div>
+
+                        <div class="col text-right">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-secondary active">
+                                    <input type="radio" name="options" id="ranks" checked> Ranking
+                                </label>
+                                <label class="btn btn-secondary">
+                                    <input type="radio" name="options" id="parses"> Parses
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -73,6 +82,7 @@
                     <table id="table-logs" class="d-none table table-striped table-light table-hover border mt-4">
                         <thead>
                             <tr>
+                                <th scope="col">Boss</th>
                                 <th scope="col">Percentile</th>
                                 <th scope="col">Rank</th>
                                 <th scope="col">All-Star</th>

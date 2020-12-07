@@ -19,15 +19,24 @@ export async function getZones() {
     return result;
 }
 
+// Handle getting parse and rank data for a character
+export async function getCharacterData(character, options) {
+    let result = { parses: '', rankings: '' };
+    result.parses = await getCharacterParses(character, options);
+    result.rankings = await getCharacterRankings(character, options);
+    return result;
+}
+
 // ex: https://classic.warcraftlogs.com:443/v1/parses/character/thrallsbro/fairbanks/US?api_key=API_KEY
-export async function getCharacterParses(options) {
+export async function getCharacterParses(character, options) {
     let result;
+    let queryOptions = setQueryOptions(options);
     try {
         result = await $.ajax({
             type: "GET",
             crossOrigin: true,
             dataType: "json",
-            url: ApiUrl + '/parses/character/' + options.character + '/fairbanks/US?zone=' + options.zone + '&api_key=' + ApiKey
+            url: `${ApiUrl}/parses/character/${character}/fairbanks/US?${queryOptions}&api_key=${ApiKey}`
         });
     } catch (error) {
         console.error(error);
@@ -36,14 +45,15 @@ export async function getCharacterParses(options) {
 }
 
 // ex: https://classic.warcraftlogs.com:443/v1/rankings/character/thrallsbro/fairbanks/US?api_key=API_KEY
-export async function getCharacterRankings(options) {
+export async function getCharacterRankings(character, options) {
     let result;
+    let queryOptions = setQueryOptions(options);
     try {
         result = await $.ajax({
             type: "GET",
             crossOrigin: true,
             dataType: "json",
-            url: ApiUrl + '/rankings/character/' + options.character + '/fairbanks/US?zone=' + options.zone + '&api_key=' + ApiKey
+            url: `${ApiUrl}/rankings/character/${character}/fairbanks/US?${queryOptions}&api_key=${ApiKey}`
         });
     } catch (error) {
         console.error(error);
@@ -51,6 +61,15 @@ export async function getCharacterRankings(options) {
     return result;
 }
 
-export function getCharacterLogs(character) {
-
+// Handle setting the query string from the options passed from client
+function setQueryOptions(options) {
+    let result = "";
+    for (let opt in options) {
+        if (options[opt]) {
+            result += `&${opt}=${options[opt]}`;
+        }
+    }
+    // drop the first "&" if we have a string
+    if (result.length > 0) result = result.replace(/&/, '');
+    return result;
 }

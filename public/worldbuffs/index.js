@@ -6,47 +6,41 @@ Onyxia: 2 hours 39 minutes. (10:00pm server time)
 Nefarian: 5 hours 3 minutes. (11:00pm server time)
 */
 
-// Global(s) - Momentjs/Dates
+//#region Moment
 let momentify, ServerTimeZone;
-// Global(s) - Timer Objects
-let Rend, Onyxia, Nefarian;
-// Global(s) - Character List
-const char = () => {
-    return {
-        parses: '',
-        rankings: ''
-    }
-};
-
-let characters = {
-    thrallsbro: char(),
-    gankaskhan: char()
-};
-
-let Zones = [];
-
 // Import moment/datetime routines
 import('./momentify.js').then((module) => {
     momentify = module;
     momentify.initMomentDefaults();
+    // Set default server timezone
+    ServerTimeZone = (moment().isDST() ? "PDT" : "PST");
 });
+//#endregion
 
-// Get Warcraft Logs script and initialize data
+//#region WarcraftLogs
+// Create a new {character}
+const char = () => {
+    return { parses: '', rankings: '' }
+};
+let characters = { thrallsbro: char(), gankaskhan: char() };
+let Zones = [];
+// Import warcraft logs api script and initialize data
 import('./warcraftlogapi.js').then(async (module) => {
     warcraftlogsapi = module;
     Zones = await warcraftlogsapi.getZones();
 });
+//#endregion
 
+//#region WorldBuffTimers
+let Rend, Onyxia, Nefarian;
 // Initialize world buff timer objects
 import('./rendtimer.js').then((module) => { Rend = module.initRend(); });
 import('./onyxiatimer.js').then((module) => { Onyxia = module.initOnyxia(); });
 import('./nefariantimer.js').then((module) => { Nefarian = module.initNefarian(); });
+//#endregion
 
 // Page load event handler
 $(document).ready(async function () {
-    // Set default server timezone
-    ServerTimeZone = (moment().isDST() ? "PDT" : "PST");
-
     // text area paste/change event handler
     $('#timerTextArea').on("paste change", function () {
         // Do we have text?
@@ -84,15 +78,11 @@ async function logtableTargetChange() {
     let target = $("#selCharacter option:selected").val();
     // If not empty fill table with their
     if (target.length > 0) {
-        // If no parse data for character exists then get it
-        if (characters[target].parses === '') {
-            let request = { character: target, zone: zone };
-            characters[target].parses = await warcraftlogsapi.getCharacterParses(request);
-        }
-        // If no ranking data for character exists then get it
-        if (characters[target].rankings === '') {
-            let request = { character: target, zone: zone };
-            characters[target].rankings = await warcraftlogsapi.getCharacterRankings(request);
+        // If no parses or rankings for character then get it
+        if (characters[target].parses === '' || characters[target].rankings === '') {
+            // let request = { character: target, zone: Zones[6] };
+            let options = { zone: Zones[6].id };
+            characters[target] = await warcraftlogsapi.getCharacterData(target, options);
         }
         // Generate table body`
         await createTableLogsBody(target);
@@ -101,14 +91,15 @@ async function logtableTargetChange() {
 }
 
 // Create table-log tbody elements from character data
-async function createTableLogsBody(charName) {
+async function createTableLogsBody(character) {
     let html = '';
     // Does the character exist in the global list?
-    if (!!characters[charName]) {
+    if (!!characters[character]) {
         // Create table parse data
-        let parses = characters[charName].parses;
+        let parses = characters[character].parses;
         for (encounter of parses) {
             html += '<tr>' +
+                `<td>${encounter.encounterName}</td>` +
                 '<td>' + parseFloat(encounter.percentile).toPrecision(4) + '% </td>' +
                 '<td>' + encounter.rank + '</td>' +
                 '<td>' + parseFloat(encounter.total).toPrecision(5) + '</td>' +
@@ -117,9 +108,10 @@ async function createTableLogsBody(charName) {
                 '</tr>';
         }
 
-        let rankings = characters[charName].rankings;
+        let rankings = characters[character].rankings;
         for (encounter of rankings) {
             html += '<tr>' +
+                '<td>' + encounter.encounterName + '</td>' +
                 '<td>' + parseFloat(encounter.percentile).toPrecision(4) + '% </td>' +
                 '<td>' + encounter.rank + '</td>' +
                 '<td>' + parseFloat(encounter.total).toPrecision(5) + '</td>' +
