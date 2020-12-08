@@ -28,7 +28,15 @@ let Zones = [];
 import('./warcraftlogapi.js').then(async (module) => {
     warcraftlogsapi = module;
     Zones = await warcraftlogsapi.getZones();
+    setZoneOptions(Zones);
 });
+function setZoneOptions(zones) {
+    let html = '';
+    for (let zone of zones) {
+        html += `<option value="${zone.id}">${zone.name}</option>`;
+    }
+    $('#selZone').append(html);
+}
 //#endregion
 
 //#region WorldBuffTimers
@@ -70,21 +78,26 @@ $(document).ready(async function () {
     $(document).ajaxStop(function () {
         $('#loadingModal').modal('hide');
     });
+
+    $('.btn>input[name="tabletype"]').on("click", async function () {
+        // Get the selected option's value
+        let target = $("#selCharacter option:selected").val();
+        // Generate table body
+        await createTableLogsBody(target);
+    });
 });
 
 async function logtableTargetChange() {
-    let zone = '1005';
     // Get the selected option's value
     let target = $("#selCharacter option:selected").val();
     // If not empty fill table with their
     if (target.length > 0) {
         // If no parses or rankings for character then get it
         if (characters[target].parses === '' || characters[target].rankings === '') {
-            // let request = { character: target, zone: Zones[6] };
             let options = { zone: Zones[6].id };
             characters[target] = await warcraftlogsapi.getCharacterData(target, options);
         }
-        // Generate table body`
+        // Generate table body
         await createTableLogsBody(target);
     }
     return;
@@ -95,29 +108,16 @@ async function createTableLogsBody(character) {
     let html = '';
     // Does the character exist in the global list?
     if (!!characters[character]) {
-        // Create table parse data
-        let parses = characters[character].parses;
-        for (encounter of parses) {
-            html += '<tr>' +
+        let tabletype = $('.btn.active>input[name="tabletype"]')[0].value;
+        let chardata = characters[character][tabletype];
+        // Create table elements from data
+        for (let encounter of chardata) {
+            html += `<tr>` +
                 `<td>${encounter.encounterName}</td>` +
-                '<td>' + parseFloat(encounter.percentile).toPrecision(4) + '% </td>' +
-                '<td>' + encounter.rank + '</td>' +
-                '<td>' + parseFloat(encounter.total).toPrecision(5) + '</td>' +
-                '<td>' + moment(encounter.startTime).format().split(" ")[0] + '</td>' +
-                '<td class="text-right"><small>P</small></td>' +
-                '</tr>';
-        }
-
-        let rankings = characters[character].rankings;
-        for (encounter of rankings) {
-            html += '<tr>' +
-                '<td>' + encounter.encounterName + '</td>' +
-                '<td>' + parseFloat(encounter.percentile).toPrecision(4) + '% </td>' +
-                '<td>' + encounter.rank + '</td>' +
-                '<td>' + parseFloat(encounter.total).toPrecision(5) + '</td>' +
-                '<td>' + moment(encounter.startTime).format().split(" ")[0] + '</td>' +
-                '<td class="text-right"><small>R</small></td>' +
-                '</tr>';
+                `<td>${parseFloat(encounter.percentile).toPrecision(4)}%</td>` +
+                `<td>${parseFloat(encounter.total).toPrecision(5)}</td>` +
+                `<td>${moment(encounter.startTime).format().split(" ")[0]}</td>` +
+                `</tr>`;
         }
     }
     $('#table-logs-body').html(html);

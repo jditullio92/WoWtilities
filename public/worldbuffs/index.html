@@ -55,39 +55,45 @@
             <div class="tab-pane fade active show" id="tab-warcraftlogs" role="tabpanel"
                 aria-labelledby="tab-warcraftlogs">
                 <div class="container py-3">
-                    <!-- Character selection -->
-                    <div class="form-row">
-                        <label class="col-form-label" for="selCharacter">Character</label>
-                        <div class="col">
+                    <form class="form-inline">
+                        <!-- Character selection -->
+                        <div class="form-row col">
+                            <label class="col-form-label" for="selCharacter">Character</label>
                             <select class="custom-select" id="selCharacter">
-                                <option value="" selected></option>
+                                <option value="" selected=""></option>
                                 <option value="gankaskhan">Gankaskhan</option>
                                 <option value="thrallsbro">Thrallsbro</option>
                             </select>
                         </div>
-
-                        <div class="col text-right">
-                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                <label class="btn btn-secondary active">
-                                    <input type="radio" name="options" id="ranks" checked> Ranking
-                                </label>
-                                <label class="btn btn-secondary">
-                                    <input type="radio" name="options" id="parses"> Parses
-                                </label>
+                        <div class="form-row">
+                            <label class="col-form-label" for="selZone">Zone</label>
+                            <div class="col-auto">
+                                <select class="custom-select" id="selZone">
+                                    <option value="" selected></option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-secondary active">
+                                        <input type="radio" name="tabletype" id="rdranks" value="rankings" checked>
+                                        Ranking
+                                    </label>
+                                    <label class="btn btn-secondary">
+                                        <input type="radio" name="tabletype" id="rdparses" value="parses"> Parses
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
 
                     <!-- Logs Table -->
-                    <table id="table-logs" class="d-none table table-striped table-light table-hover border mt-4">
+                    <table id="table-logs" class="d-none table table-striped table-light border mt-4">
                         <thead>
                             <tr>
                                 <th scope="col">Boss</th>
                                 <th scope="col">Percentile</th>
-                                <th scope="col">Rank</th>
                                 <th scope="col">All-Star</th>
                                 <th scope="col">Date</th>
-                                <th scope="col"> </th>
                             </tr>
                         </thead>
                         <tbody id="table-logs-body"></tbody>
